@@ -1,9 +1,11 @@
 import requests
-from creds import STOCK_API_KEY
+from creds import STOCK_API_KEY, NEWS_API_KEY
 
 STOCK_NAME = "NVDA"
+COMPANY_NAME = "NVIDIA"
 
 STOCK_ENDPOINT = "https://www.alphavantage.co/query"
+NEWS_ENDPOINT = "https://newsapi.org/v2/everything"
 
 # Get yesterday's closing stock price.
 
@@ -32,3 +34,12 @@ print(difference)
 # Find the percentage difference between the closing prices.
 diff_percentage = (difference / float(day_before_yesterday_closing_price)) * 100
 print(diff_percentage)
+
+# Get articles (news) with COMPANY_NAME if percentage difference is higher than e.g. 2%.
+if diff_percentage > 1.5:
+    news_params = {
+        "apiKey": NEWS_API_KEY,
+        "q": COMPANY_NAME,
+    }
+    news_response = requests.get(NEWS_ENDPOINT, params=news_params)
+    articles = news_response.json()["articles"]
