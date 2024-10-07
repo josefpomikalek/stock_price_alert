@@ -28,3 +28,7 @@ print(day_before_yesterday_closing_price)
 # Find the positive difference between the closing prices.
 difference = abs(float(yesterday_closing_price) - float(day_before_yesterday_closing_price))
 print(difference)
+
+# Find the percentage difference between the closing prices.
+diff_percentage = (difference / float(day_before_yesterday_closing_price)) * 100
+print(diff_percentage)
