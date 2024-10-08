@@ -28,16 +28,21 @@ day_before_yesterday_data = data_list[1]
 day_before_yesterday_closing_price = day_before_yesterday_data["4. close"]
 print(day_before_yesterday_closing_price)
 
-# Find the positive difference between the closing prices.
-difference = abs(float(yesterday_closing_price) - float(day_before_yesterday_closing_price))
+# Find the difference between the closing prices.
+difference = (float(yesterday_closing_price) - float(day_before_yesterday_closing_price))
 print(difference)
+up_down = None
+if difference > 0:
+    up_down = "🚀"
+else:
+    up_down = "🔻"
 
 # Find the percentage difference between the closing prices.
-diff_percentage = (difference / float(day_before_yesterday_closing_price)) * 100
+diff_percentage = round(difference / float(day_before_yesterday_closing_price) * 100, 2)
 print(diff_percentage)
 
 # Get articles (news) with COMPANY_NAME if percentage difference is higher than e.g. 2%.
-if diff_percentage > 1.5:
+if abs(diff_percentage) > 2:
     news_params = {
         "apiKey": NEWS_API_KEY,
         "q": COMPANY_NAME,
@@ -49,7 +54,8 @@ if diff_percentage > 1.5:
     three_articles = articles[:3]
     print(three_articles)
 
-    formatted_articles = [f"Headline: {article['title']} \nBrief: {article['description']}" for article in three_articles]
+    formatted_articles = [f"{STOCK_NAME}: {up_down}{diff_percentage}% \nHeadline: {article['title']} \nBrief: {article['description']}" for article in three_articles]
+    print(formatted_articles)
 
     # Send each article as a separate message via Twilio.
     client = Client(TWILIO_SID, TWILIO_AUTH_TOKEN)
