@@ -54,7 +54,8 @@ if abs(diff_percentage) > 2:
     three_articles = articles[:3]
     print(three_articles)
 
-    formatted_articles = [f"{STOCK_NAME}: {up_down}{diff_percentage}% \nHeadline: {article['title']} \nBrief: {article['description']}" for article in three_articles]
+    formatted_articles = [f"{STOCK_NAME}: {up_down}{diff_percentage}% \nHeadline: {article['title']} "
+                          f"\nBrief: {article['description']}" for article in three_articles]
     print(formatted_articles)
 
     # Send each article as a separate message via Twilio.
@@ -64,5 +65,4 @@ if abs(diff_percentage) > 2:
             body=article,
             from_=MY_TWILIO_TEST_NUMBER,
             to=MY_PHONE_NUMBER
-    )
-
+        )
