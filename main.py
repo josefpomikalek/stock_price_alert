@@ -1,5 +1,6 @@
 import requests
-from creds import STOCK_API_KEY, NEWS_API_KEY
+from creds import STOCK_API_KEY, NEWS_API_KEY, TWILIO_SID, TWILIO_AUTH_TOKEN, MY_PHONE_NUMBER, MY_TWILIO_TEST_NUMBER
+from twilio.rest import Client
 
 STOCK_NAME = "NVDA"
 COMPANY_NAME = "NVIDIA"
@@ -46,3 +47,16 @@ if diff_percentage > 1.5:
 
     # Get first three articles using slicing operator.
     three_articles = articles[:3]
+    print(three_articles)
+
+    formatted_articles = [f"Headline: {article['title']} \nBrief: {article['description']}" for article in three_articles]
+
+    # Send each article as a separate message via Twilio.
+    client = Client(TWILIO_SID, TWILIO_AUTH_TOKEN)
+    for article in formatted_articles:
+        message = client.messages.create(
+            body=article,
+            from_=MY_TWILIO_TEST_NUMBER,
+            to=MY_PHONE_NUMBER
+    )
+
